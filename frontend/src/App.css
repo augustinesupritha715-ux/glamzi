@@ -1,0 +1,446 @@
+/* ===============================
+   BACKGROUND ANIMATION
+================================= */
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(-45deg, #000000, #14001f, #001f3f, #0f0f1a);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating particles */
+body::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(#8a2be2 1px, transparent 1px),
+    radial-gradient(#0040ff 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.07;
+  animation: particleMove 80s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes particleMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1200px); }
+}
+
+/* ===============================
+   CONTAINER
+================================= */
+
+.container {
+  text-align: center;
+  width: 100%;
+  padding: 60px 0;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   INTRO SCREEN
+================================= */
+
+.intro-screen {
+  height: 100vh;
+  width: 100%;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-logo {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 10px;
+  background: linear-gradient(90deg, #8a2be2, #0040ff, #8a2be2);
+  background-size: 200% auto;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  animation: shine 3s linear infinite;
+}
+
+.intro-tag {
+  margin-top: 15px;
+  letter-spacing: 5px;
+  color: #aaa;
+}
+
+/* ===============================
+   LOGO SHINE (UPDATED)
+================================= */
+
+.logo {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, #8a2be2, #0040ff, #8a2be2);
+  background-size: 200% auto;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+.tagline {
+  color: #aaa;
+  letter-spacing: 5px;
+  margin-bottom: 40px;
+}
+
+/* ===============================
+   GLASS CARD
+================================= */
+
+.card {
+  position: relative;
+  background: rgba(20, 20, 40, 0.65);
+  padding: 2rem;
+  border-radius: 25px;
+  margin: 30px auto;
+  width: 430px;
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  box-shadow: 0 0 50px rgba(138, 43, 226, 0.4);
+  overflow: hidden;
+  transition: 0.4s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.1),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: reflect 6s infinite linear;
+}
+
+@keyframes reflect {
+  from { transform: translateX(-100%) rotate(25deg); }
+  to { transform: translateX(100%) rotate(25deg); }
+}
+
+.card:hover {
+  box-shadow: 0 0 70px rgba(138, 43, 226, 0.9);
+  transform: translateY(-8px);
+}
+
+/* ===============================
+   IMAGE
+================================= */
+
+.preview {
+  width: 270px;
+  margin: 20px 0;
+  border-radius: 20px;
+  border: 2px solid #6a0dad;
+  transition: 0.4s;
+}
+
+.preview:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px #8a2be2;
+}
+
+/* ===============================
+   OPTIONS
+================================= */
+
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.options button {
+  background: linear-gradient(45deg, #6a0dad, #001f7f);
+  border: none;
+  color: white;
+  padding: 9px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.options button:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 20px #8a2be2;
+}
+
+/* ===============================
+   TEXTAREA
+================================= */
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 15px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  margin-top: 15px;
+  background: #1a1a2e;
+  color: white;
+  outline: none;
+}
+
+textarea:focus {
+  box-shadow: 0 0 20px #8a2be2;
+}
+
+/* ===============================
+   BUTTON
+================================= */
+
+.generate {
+  margin-top: 20px;
+  background: linear-gradient(45deg, #8a2be2, #0040ff);
+  padding: 13px 30px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.generate:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #8a2be2;
+}
+
+/* ===============================
+   GALLERY
+================================= */
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.gallery-item {
+  position: relative;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: red;
+  box-shadow: 0 0 20px red;
+}
+/* ICON SIZE */
+.icon {
+  font-size: 1.1rem;
+}
+
+/* ACTIVE BUTTON */
+.options button.active {
+  background: linear-gradient(45deg, #8a2be2, #0040ff);
+  box-shadow: 0 0 25px #8a2be2, 0 0 40px #0040ff;
+  transform: scale(1.1);
+}
+
+/* LOADING SPIN */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* RESULT IMAGE ANIMATION */
+.result-animate {
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* SAVE BUTTON DIFFERENT COLOR */
+.save-btn {
+  background: linear-gradient(45deg, #00c9ff, #92fe9d);
+}
+
+.save-btn:hover {
+  box-shadow: 0 0 30px #00c9ff;
+}
+/* ===============================
+   PREMIUM IMAGE EFFECT
+================================= */
+
+/* Smooth floating animation */
+.preview {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Hover luxury glow */
+.preview:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 25px #8a2be2,
+    0 0 50px #0040ff,
+    0 0 80px rgba(138, 43, 226, 0.6);
+}
+
+/* Floating effect */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Wardrobe item hover lift */
+.gallery-item {
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+/* ===============================
+   RESULT NEON PULSE EFFECT
+================================= */
+
+.result-animate {
+  position: relative;
+  animation: fadeIn 1s ease-in-out, pulseGlow 2.5s infinite alternate;
+}
+
+/* Neon pulse animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow:
+      0 0 15px #8a2be2,
+      0 0 25px #0040ff;
+  }
+  100% {
+    box-shadow:
+      0 0 35px #8a2be2,
+      0 0 60px #0040ff,
+      0 0 90px rgba(138, 43, 226, 0.7);
+  }
+}
+/* ===============================
+   MOBILE RESPONSIVE UPGRADE
+================================= */
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 30px 15px;
+  }
+
+  .logo {
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 1.5rem;
+    margin: 20px 0;
+  }
+
+  .preview {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .options {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .options button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  textarea {
+    font-size: 0.9rem;
+  }
+
+  .generate {
+    width: 100%;
+  }
+
+  .gallery {
+    gap: 10px;
+  }
+}
+/* ===============================
+   FINAL POLISH EFFECTS
+================================= */
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Page fade on load */
+body {
+  animation: pageFade 1s ease-in-out;
+}
+
+@keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
