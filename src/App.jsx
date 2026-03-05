@@ -9,9 +9,9 @@ import {
   FaCloud,
   FaSnowflake,
   FaTrash,
-  FaSparkles,
   FaSave,
 } from "react-icons/fa"
+import { HiSparkles } from "react-icons/hi2"
 
 export default function App() {
   const [image, setImage] = useState(null)
@@ -30,6 +30,7 @@ export default function App() {
 
   const handleImage = (e) => {
     const file = e.target.files[0]
+    if (!file) return
     setImage(file)
     setPreview(URL.createObjectURL(file))
   }
@@ -151,11 +152,11 @@ export default function App() {
         >
           {loading ? (
             <>
-              <FaSparkles className="spin" /> Styling...
+              <HiSparkles className="spin" /> Styling...
             </>
           ) : (
             <>
-              <FaSparkles /> Generate Luxury Look
+              <HiSparkles /> Generate Luxury Look
             </>
           )}
         </button>
