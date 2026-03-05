@@ -45,7 +45,17 @@ export default function App() {
 
     try {
       setLoading(true)
-      const res = await axios.post("http://localhost:5000/generate", formData)
+
+      const res = await axios.post(
+        "https://glamzi-backend-bu9d.onrender.com/generate",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+
       setResult(res.data.image)
     } catch (error) {
       alert("Something went wrong. Check backend.")
@@ -73,11 +83,10 @@ export default function App() {
       <h1 className="logo">GLAMZI</h1>
       <p className="tagline">AI POWERED LUXURY FASHION</p>
 
-      {/* Upload + Controls */}
       <div className="card">
         <input type="file" onChange={handleImage} />
 
-        {preview && <img src={preview} className="preview" />}
+        {preview && <img src={preview} className="preview" alt="preview" />}
 
         <div className="selectors">
           <h3>Choose Category</h3>
@@ -152,11 +161,10 @@ export default function App() {
         </button>
       </div>
 
-      {/* Result */}
       {result && (
         <div className="card">
           <h2>Styled Look</h2>
-          <img src={result} className="preview result-animate" />
+          <img src={result} className="preview result-animate" alt="result" />
 
           <button onClick={saveLook} className="generate save-btn">
             <FaSave /> Save Look
@@ -164,15 +172,13 @@ export default function App() {
         </div>
       )}
 
-      {/* Wardrobe */}
       {wardrobe.length > 0 && (
         <div className="card">
           <h2>Your Wardrobe</h2>
           <div className="gallery">
             {wardrobe.map((item, index) => (
               <div key={index} className="gallery-item">
-                <img src={item.image} className="preview" />
-
+                <img src={item.image} className="preview" alt="wardrobe" />
                 <button
                   className="delete-btn"
                   onClick={() => deleteLook(index)}
@@ -185,7 +191,6 @@ export default function App() {
         </div>
       )}
 
-      {/* FOOTER */}
       <footer className="footer">
         <p>© {new Date().getFullYear()} GLAMZI</p>
         <p className="made">
