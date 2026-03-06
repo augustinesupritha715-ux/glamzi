@@ -5,10 +5,16 @@ const axios = require("axios")
 require("dotenv").config()
 
 const app = express()
+
 app.use(cors())
 app.use(express.json())
 
 const upload = multer()
+
+// Health route (prevents "Cannot GET /")
+app.get("/", (req, res) => {
+  res.send("GLAMZI Backend Running 🚀")
+})
 
 app.post("/generate", upload.single("image"), async (req, res) => {
   try {
@@ -19,6 +25,8 @@ Luxury fashion editorial of a ${category} outfit suitable for ${weather} weather
 High detail, cinematic lighting, premium fabrics, ultra realistic.
 ${customPrompt}
 `
+
+    console.log("PROMPT:", prompt)
 
     const response = await axios({
       method: "POST",
@@ -35,12 +43,27 @@ ${customPrompt}
 
     const base64 = Buffer.from(response.data).toString("base64")
 
-    res.json({ image: `data:image/png;base64,${base64}` })
+    res.json({
+      image: `data:image/png;base64,${base64}`
+    })
 
-  } catch (err) {
-    console.error(err.response?.data || err.message)
-    res.status(500).json({ error: "AI generation failed" })
+  } catch (error) {
+
+    console.error("FULL ERROR:", error)
+
+    if (error.response) {
+      console.error("HF RESPONSE:", error.response.data)
+    }
+
+    res.status(500).json({
+      error: "AI generation failed",
+      details: error.response?.data || error.message
+    })
   }
 })
 
-app.listen(5000, () => console.log("Server running on port 5000 🚀"))
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} 🚀`)
+})
