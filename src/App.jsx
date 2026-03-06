@@ -59,7 +59,17 @@ export default function App() {
 
       setResult(res.data.image)
     } catch (error) {
-      alert("Something went wrong. Check backend.")
+
+      console.error("Backend Error:", error)
+
+      if (error.response) {
+        alert("Backend Error: " + error.response.data.message)
+      } else if (error.request) {
+        alert("No response from backend. Server may be sleeping.")
+      } else {
+        alert("Error: " + error.message)
+      }
+
     } finally {
       setLoading(false)
     }
@@ -91,6 +101,7 @@ export default function App() {
 
         <div className="selectors">
           <h3>Choose Category</h3>
+
           <div className="options">
             <button
               className={category === "casual" ? "active" : ""}
@@ -115,6 +126,7 @@ export default function App() {
           </div>
 
           <h3>Weather</h3>
+
           <div className="options">
             <button
               className={weather === "sunny" ? "active" : ""}
@@ -165,6 +177,7 @@ export default function App() {
       {result && (
         <div className="card">
           <h2>Styled Look</h2>
+
           <img src={result} className="preview result-animate" alt="result" />
 
           <button onClick={saveLook} className="generate save-btn">
@@ -176,10 +189,12 @@ export default function App() {
       {wardrobe.length > 0 && (
         <div className="card">
           <h2>Your Wardrobe</h2>
+
           <div className="gallery">
             {wardrobe.map((item, index) => (
               <div key={index} className="gallery-item">
                 <img src={item.image} className="preview" alt="wardrobe" />
+
                 <button
                   className="delete-btn"
                   onClick={() => deleteLook(index)}
@@ -194,9 +209,7 @@ export default function App() {
 
       <footer className="footer">
         <p>© {new Date().getFullYear()} GLAMZI</p>
-        <p className="made">
-          Made with 💜 by You | AI Powered Fashion
-        </p>
+        <p className="made">Made with 💜 by You | AI Powered Fashion</p>
       </footer>
     </div>
   )
