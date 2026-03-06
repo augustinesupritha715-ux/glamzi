@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
-import "./App.css"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 import {
   FaTshirt,
   FaGlassCheers,
@@ -10,84 +10,90 @@ import {
   FaSnowflake,
   FaTrash,
   FaSave,
-} from "react-icons/fa"
-import { HiSparkles } from "react-icons/hi2"
+} from "react-icons/fa";
+import { HiSparkles } from "react-icons/hi2";
 
 export default function App() {
-  const [image, setImage] = useState(null)
-  const [preview, setPreview] = useState(null)
-  const [result, setResult] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [category, setCategory] = useState("casual")
-  const [weather, setWeather] = useState("sunny")
-  const [customPrompt, setCustomPrompt] = useState("")
-  const [wardrobe, setWardrobe] = useState([])
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("casual");
+  const [weather, setWeather] = useState("sunny");
+  const [customPrompt, setCustomPrompt] = useState("");
+  const [wardrobe, setWardrobe] = useState([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("glamzi")) || []
-    setWardrobe(saved)
-  }, [])
+    const saved = JSON.parse(localStorage.getItem("glamzi")) || [];
+    setWardrobe(saved);
+  }, []);
 
   const handleImage = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    setImage(file)
-    setPreview(URL.createObjectURL(file))
-  }
+    const file = e.target.files[0];
+    if (!file) return;
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
   const generateStyle = async () => {
-    if (!image) return alert("Upload an image first")
+    if (!image) {
+      alert("Upload an image first");
+      return;
+    }
 
-    const formData = new FormData()
-    formData.append("image", image)
-    formData.append("category", category)
-    formData.append("weather", weather)
-    formData.append("customPrompt", customPrompt)
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("category", category);
+    formData.append("weather", weather);
+    formData.append("customPrompt", customPrompt);
 
     try {
-      setLoading(true)
+      setLoading(true);
 
       const res = await axios.post(
-        "https://glamzi-backend-bu9d.onrender.com/generate",
+        "http://localhost:5000/generate",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
+      );
 
-      setResult(res.data.image)
+      setResult(res.data.image);
     } catch (error) {
-
-      console.error("Backend Error:", error)
+      console.error("Backend Error:", error);
 
       if (error.response) {
-        alert("Backend Error: " + error.response.data.message)
+        alert(
+          "Backend Error: " +
+            (error.response.data?.message ||
+              error.response.data?.error ||
+              "Server error")
+        );
       } else if (error.request) {
-        alert("No response from backend. Server may be sleeping.")
+        alert("Backend not responding.");
       } else {
-        alert("Error: " + error.message)
+        alert("Error: " + error.message);
       }
-
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const saveLook = () => {
-    const newLook = { image: result, category, weather }
-    const updated = [newLook, ...wardrobe]
-    setWardrobe(updated)
-    localStorage.setItem("glamzi", JSON.stringify(updated))
-    alert("Saved to Wardrobe 💎")
-  }
+    const newLook = { image: result, category, weather };
+    const updated = [newLook, ...wardrobe];
+    setWardrobe(updated);
+    localStorage.setItem("glamzi", JSON.stringify(updated));
+    alert("Saved to Wardrobe 💎");
+  };
 
   const deleteLook = (index) => {
-    const updated = wardrobe.filter((_, i) => i !== index)
-    setWardrobe(updated)
-    localStorage.setItem("glamzi", JSON.stringify(updated))
-  }
+    const updated = wardrobe.filter((_, i) => i !== index);
+    setWardrobe(updated);
+    localStorage.setItem("glamzi", JSON.stringify(updated));
+  };
 
   return (
     <div className="container">
@@ -209,8 +215,8 @@ export default function App() {
 
       <footer className="footer">
         <p>© {new Date().getFullYear()} GLAMZI</p>
-        <p className="made">Made with 💜 by You | AI Powered Fashion</p>
+        <p className="made">Made with 💜 by Augustine supritha | AI Powered Fashion</p>
       </footer>
     </div>
-  )
+  );
 }

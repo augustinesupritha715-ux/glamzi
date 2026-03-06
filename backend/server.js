@@ -11,35 +11,45 @@ app.use(express.json())
 
 const upload = multer()
 
-// Health route (prevents "Cannot GET /")
+console.log("HF TOKEN:", process.env.HF_TOKEN ? "Loaded ✅" : "Missing ❌")
+
+// Test route
 app.get("/", (req, res) => {
   res.send("GLAMZI Backend Running 🚀")
 })
 
 app.post("/generate", upload.single("image"), async (req, res) => {
+
+  console.log("🔥 /generate endpoint called")
+
   try {
+
     const { category, weather, customPrompt } = req.body
 
     const prompt = `
-Luxury fashion editorial of a ${category} outfit suitable for ${weather} weather.
-High detail, cinematic lighting, premium fabrics, ultra realistic.
-${customPrompt}
+Luxury fashion editorial of a ${category} outfit suitable for ${weather} weather,
+high fashion runway photography, ultra realistic, premium fabrics, dramatic lighting,
+8k fashion photography.
+${customPrompt || ""}
 `
 
-    console.log("PROMPT:", prompt)
+    console.log("Prompt:", prompt)
 
     const response = await axios({
-      method: "POST",
-      url: "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2",
+      method: "post",
+      url: "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5",
       headers: {
         Authorization: `Bearer ${process.env.HF_TOKEN}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       data: {
-        inputs: prompt,
+        inputs: prompt
       },
       responseType: "arraybuffer",
+      timeout: 60000
     })
+
+    console.log("✅ Image generated from HF")
 
     const base64 = Buffer.from(response.data).toString("base64")
 
@@ -49,15 +59,15 @@ ${customPrompt}
 
   } catch (error) {
 
-    console.error("FULL ERROR:", error)
+    console.log("❌ FULL ERROR:")
+    console.log(error)
 
     if (error.response) {
-      console.error("HF RESPONSE:", error.response.data)
+      console.log("HF ERROR DATA:", error.response.data.toString())
     }
 
     res.status(500).json({
-      error: "AI generation failed",
-      details: error.response?.data || error.message
+      message: "AI generation failed"
     })
   }
 })
@@ -65,5 +75,5 @@ ${customPrompt}
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} 🚀`)
+  console.log(`GLAMZI Backend Running on ${PORT} 🚀`)
 })
