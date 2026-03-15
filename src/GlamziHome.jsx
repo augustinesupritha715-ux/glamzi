@@ -12,9 +12,8 @@ import {
   FaSave,
 } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi2";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function Home() {
+export default function GlamziHome() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
@@ -185,7 +184,6 @@ function Home() {
       {result && (
         <div className="card">
           <h2>Styled Look</h2>
-
           <img src={result} className="preview result-animate" alt="result" />
 
           <button onClick={saveLook} className="generate save-btn">
@@ -214,23 +212,6 @@ function Home() {
           </div>
         </div>
       )}
-
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} GLAMZI</p>
-        <p className="made">
-          Made with 💜 by Augustine Supritha | AI Powered Fashion
-        </p>
-      </footer>
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
   );
 }
