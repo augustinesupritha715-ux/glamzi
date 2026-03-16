@@ -14,10 +14,18 @@ import {
 import { HiSparkles } from "react-icons/hi2";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Login from "./Login";
+import Quiz from "./Quiz";
+
 function Home() {
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
+
+  /* NEW STATE FOR AI SUGGESTIONS */
+  const [advice, setAdvice] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("casual");
   const [weather, setWeather] = useState("sunny");
@@ -63,6 +71,10 @@ function Home() {
       );
 
       setResult(res.data.image);
+
+      /* GET AI SUGGESTIONS */
+      setAdvice(res.data.advice);
+
     } catch (error) {
       console.error("Backend Error:", error);
 
@@ -99,6 +111,7 @@ function Home() {
 
   return (
     <div className="container">
+
       <h1 className="logo">GLAMZI</h1>
       <p className="tagline">AI POWERED LUXURY FASHION</p>
 
@@ -188,6 +201,31 @@ function Home() {
 
           <img src={result} className="preview result-animate" alt="result" />
 
+          {/* AI SUGGESTIONS */}
+          {advice && (
+            <div className="ai-advice">
+
+              <h3>✨ AI Fashion Suggestions</h3>
+
+              <p><b>Skin Tone:</b> {advice.skinTone}</p>
+
+              <p><b>Outfit Rating:</b> {advice.rating}</p>
+
+              <p><b>Recommended Colors:</b></p>
+
+              <ul>
+                {advice.recommendedColors?.map((c, i) => (
+                  <li key={i}>{c}</li>
+                ))}
+              </ul>
+
+              <p><b>Accessories:</b> {advice.accessories}</p>
+
+              <p><b>Feedback:</b> {advice.feedback}</p>
+
+            </div>
+          )}
+
           <button onClick={saveLook} className="generate save-btn">
             <FaSave /> Save Look
           </button>
@@ -221,6 +259,7 @@ function Home() {
           Made with 💜 by Augustine Supritha | AI Powered Fashion
         </p>
       </footer>
+
     </div>
   );
 }
@@ -229,7 +268,13 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+
+        <Route path="/" element={<Login />} />
+
+        <Route path="/quiz" element={<Quiz />} />
+
+        <Route path="/home" element={<Home />} />
+
       </Routes>
     </Router>
   );
