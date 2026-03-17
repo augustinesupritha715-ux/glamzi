@@ -23,9 +23,29 @@ export default function GlamziHome() {
   const [customPrompt, setCustomPrompt] = useState("");
   const [wardrobe, setWardrobe] = useState([]);
 
+  // 🔥 NEW STATES
+  const [bodyType, setBodyType] = useState("");
+  const [aiTips, setAiTips] = useState("");
+  const [styleNote, setStyleNote] = useState("");
+
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("glamzi")) || [];
     setWardrobe(saved);
+
+    const bodyData = JSON.parse(localStorage.getItem("glamziBody"));
+    if (bodyData?.bodyType) {
+      setBodyType(bodyData.bodyType);
+
+      if (bodyData.bodyType === "Slim") {
+        setAiTips("Layered outfits & oversized styles enhance your frame.");
+      } else if (bodyData.bodyType === "Balanced") {
+        setAiTips("You can wear almost anything — try structured looks.");
+      } else if (bodyData.bodyType === "Curvy") {
+        setAiTips("Fitted styles with waist definition look elegant.");
+      } else {
+        setAiTips("Flowy fabrics & darker tones give luxury silhouette.");
+      }
+    }
   }, []);
 
   const handleImage = (e) => {
@@ -42,11 +62,13 @@ export default function GlamziHome() {
       return;
     }
 
+    const fullPrompt = `${customPrompt} | Body Type: ${bodyType} | Category: ${category} | Weather: ${weather} | Make it premium luxury fashion`;
+
     const formData = new FormData();
     formData.append("image", image);
     formData.append("category", category);
     formData.append("weather", weather);
-    formData.append("customPrompt", customPrompt);
+    formData.append("customPrompt", fullPrompt);
 
     try {
       setLoading(true);
@@ -62,21 +84,15 @@ export default function GlamziHome() {
       );
 
       setResult(res.data.image);
+
+      // 🔥 Smart AI style note
+      setStyleNote(
+        `Perfect ${category} look for ${weather} weather. Designed for ${bodyType} body type ✨`
+      );
+
     } catch (error) {
       console.error("Backend Error:", error);
-
-      if (error.response) {
-        alert(
-          "Backend Error: " +
-            (error.response.data?.message ||
-              error.response.data?.error ||
-              "Server error")
-        );
-      } else if (error.request) {
-        alert("Backend not responding.");
-      } else {
-        alert("Error: " + error.message);
-      }
+      alert("Something went wrong. Check backend.");
     } finally {
       setLoading(false);
     }
@@ -102,9 +118,20 @@ export default function GlamziHome() {
       <p className="tagline">AI POWERED LUXURY FASHION</p>
 
       <div className="card">
+
+        {/* Upload */}
         <input type="file" onChange={handleImage} />
 
         {preview && <img src={preview} className="preview" alt="preview" />}
+
+        {/* AI INFO */}
+        {bodyType && (
+          <p className="ai-result">
+            AI Detected: <strong>{bodyType}</strong>
+          </p>
+        )}
+
+        {aiTips && <p className="ai-tip">{aiTips}</p>}
 
         <div className="selectors">
           <h3>Choose Category</h3>
@@ -181,10 +208,15 @@ export default function GlamziHome() {
         </button>
       </div>
 
+      {/* RESULT */}
       {result && (
         <div className="card">
           <h2>Styled Look</h2>
+
           <img src={result} className="preview result-animate" alt="result" />
+
+          {/* AI STYLE NOTE */}
+          <p className="ai-tip">{styleNote}</p>
 
           <button onClick={saveLook} className="generate save-btn">
             <FaSave /> Save Look
@@ -192,6 +224,7 @@ export default function GlamziHome() {
         </div>
       )}
 
+      {/* WARDROBE */}
       {wardrobe.length > 0 && (
         <div className="card">
           <h2>Your Wardrobe</h2>
