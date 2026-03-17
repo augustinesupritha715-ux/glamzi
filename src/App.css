@@ -462,3 +462,56 @@ html {
 
   list-style: circle;
 }
+/* ===============================
+   SAFE UX IMPROVEMENTS (NO THEME CHANGE)
+================================= */
+
+/* Button disabled state */
+.generate:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Click feel (subtle press effect) */
+.generate.loading {
+  transform: scale(0.97);
+  transition: transform 0.2s ease;
+}
+
+/* Smooth hover (only if you don’t already have one) */
+.generate:hover {
+  transition: all 0.3s ease;
+}
+
+/* Input focus glow (very subtle, won’t change theme) */
+input:focus {
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+/* Smooth card entry (premium feel) */
+.card {
+  animation: fadeInUp 0.6s ease;
+}
+
+/* Logo slight pop (luxury feel, no color change) */
+.login-logo {
+  transition: transform 0.3s ease;
+}
+
+.login-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
